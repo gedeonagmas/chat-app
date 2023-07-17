@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    baseUrl: "https://real-time-chat-4zya.onrender.com",
   }),
   tagTypes: ["get-all-users", "get-history"],
   endpoints: (builder) => ({
