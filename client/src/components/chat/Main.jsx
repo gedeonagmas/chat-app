@@ -17,7 +17,7 @@ import User from "./private/User";
 import MessageField from "./messages/MessageField";
 
 const Main = () => {
-  const api = "http://localhost:5000/";
+  const api = "https://real-time-chat-4zya.onrender.com/";
   const navigate = useNavigate();
   const location = useLocation();
   const currentUser = location.state.user;
@@ -102,7 +102,7 @@ const Main = () => {
 
   //initialize socket io
   useEffect(() => {
-    setSocket(io("http://localhost:5000"));
+    setSocket(io("https://real-time-chat-4zya.onrender.com"));
   }, []);
 
   //online users
@@ -124,7 +124,7 @@ const Main = () => {
 
   // file delete handler
   const fileDeleteHandler = async () => {
-    await axios.delete(`http://localhost:5000/delete/file?ids=${chatId}`);
+    await axios.delete(`https://real-time-chat-4zya.onrender.com/delete/file?ids=${chatId}`);
     setFileSendFlag(false);
     setFiles("");
     setFileDescription("");
@@ -133,7 +133,7 @@ const Main = () => {
   // message send patch handler
   const patchHandler = async (data) => {
     if (data) {
-      const da = await axios.patch(`http://localhost:5000/update/private/chat?ids=${data.chatId}`, {
+      const da = await axios.patch(`https://real-time-chat-4zya.onrender.com/update/private/chat?ids=${data.chatId}`, {
         chatOwners: data.chatOwners,
         chatId: data.chatId,
         messages: [
@@ -149,7 +149,7 @@ const Main = () => {
         chatType: data.chatType,
       });
       if (da.request.status === 200) {
-        const data2 = await axios.get(`http://localhost:5000/get/private/chat?ids=${chatId}`);
+        const data2 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/private/chat?ids=${chatId}`);
         setTexts(data2.data[0].messages);
         dataSenderHandler(data2.data[0].messages, data2.data[0].chatId);
       }
@@ -160,7 +160,7 @@ const Main = () => {
   // message send handler
   const [typing, setTyping] = useState(false);
   const messageSendHandler = async () => {
-    const data2 = await axios.get(`http://localhost:5000/get/private/chat?ids=${chatId}`);
+    const data2 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/private/chat?ids=${chatId}`);
     if (data2.request.status === 201) {
       patchHandler(data2.data[0]);
     }
@@ -196,7 +196,7 @@ const Main = () => {
 
   // create room handler helper
   const createRoomHandlerHelper = async (elId, elName, types) => {
-    const data = await axios.post("http://localhost:5000/create/private/chat", {
+    const data = await axios.post("https://real-time-chat-4zya.onrender.com/create/private/chat", {
       chatOwners: `${currentUser.userName} and ${elName}`,
       chatId: elId,
       messages: {
@@ -209,7 +209,7 @@ const Main = () => {
       chatType: types,
     });
     if (data.request.status === 201) {
-      const data1 = await axios.get(`http://localhost:5000/get/private/chat?ids=${elId}`);
+      const data1 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/private/chat?ids=${elId}`);
       if (data1.data.length !== 0) {
         if (data1.data[0].messages.length < 2) {
           setSayHi(true);
@@ -227,9 +227,9 @@ const Main = () => {
   const createRoomHandler = async (firstId, secondId, elName, type) => {
     setFirstId(firstId);
     setSecondId(secondId);
-    const data1 = await axios.get(`http://localhost:5000/get/private/chat?ids=${firstId}`);
+    const data1 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/private/chat?ids=${firstId}`);
     if (data1.data.length === 0) {
-      const data2 = await axios.get(`http://localhost:5000/get/private/chat?ids=${secondId}`);
+      const data2 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/private/chat?ids=${secondId}`);
       if (data2.data.length === 0) {
         createRoomHandlerHelper(firstId, elName, type);
       } else {
@@ -256,13 +256,13 @@ const Main = () => {
 
   // private underline handler
   const underlineHandler = async (val) => {
-    const data = await axios.get(`http://localhost:5000/get/all/users`);
+    const data = await axios.get(`https://real-time-chat-4zya.onrender.com/get/all/users`);
     let b = [];
     data.data.map((ee, j) => {
       b.push(ee._id);
       if (j === data.data.length - 1) {
         const fu = async () => {
-          const data2 = await axios.get("http://localhost:5000/get/group/data");
+          const data2 = await axios.get("https://real-time-chat-4zya.onrender.com/get/group/data");
           data2.data.map((e, i) => {
             b.push(e._id);
             if (i === data2.data.length - 1) {
@@ -287,7 +287,7 @@ const Main = () => {
 
   // file patch handler
   const filePatchHandler = async (messageData, fileData) => {
-    const data1 = await axios.patch(`http://localhost:5000/update/private/chat?ids=${messageData.chatId}`, {
+    const data1 = await axios.patch(`https://real-time-chat-4zya.onrender.com/update/private/chat?ids=${messageData.chatId}`, {
       chatOwners: messageData.chatOwners,
       chatId: messageData.chatId,
       messages: [
@@ -308,7 +308,7 @@ const Main = () => {
       chatType: messageData.chatType,
     });
     if (data1.request.status === 200) {
-      const data2 = await axios.get(`http://localhost:5000/get/private/chat?ids=${chatId}`);
+      const data2 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/private/chat?ids=${chatId}`);
       if (data2.data[0].messages.length < 2) {
         setSayHi(true);
       } else {
@@ -350,9 +350,9 @@ const Main = () => {
       fd.append("sender", currentUser.userName);
       fd.append("chatId", chatId);
       fd.append("image", currentUser.profilePicture);
-      const data = await axios.post("http://localhost:5000/send/file", fd);
+      const data = await axios.post("https://real-time-chat-4zya.onrender.com/send/file", fd);
       if (data.request.status === 200) {
-        const data2 = await axios.get(`http://localhost:5000/get/private/chat?ids=${chatId}`);
+        const data2 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/private/chat?ids=${chatId}`);
         setTexts(data2.data[0].messages);
         dataSenderHandler(data2.data[0].messages, data2.data[0].chatId);
       }
@@ -378,7 +378,7 @@ const Main = () => {
 
   // group room create handler
   const groupJoinHandler = async (groupId, groupName, groups) => {
-    const data = await axios.get(`http://localhost:5000/get/single/group?ids=${groupId}`);
+    const data = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupId}`);
     if (data.data.length !== 0 && data.request.status === 200) {
       setOwnGroupData(data.data);
       setNewRequestData(data.data[0].requests);
@@ -404,7 +404,7 @@ const Main = () => {
     socket?.on("cc2", (val) => {
       setJoinHope(val);
     });
-    const data = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+    const data = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
     const b = data.data[0].requests;
     const a = currentUser._id;
     if (b.includes(a)) {
@@ -414,12 +414,12 @@ const Main = () => {
       });
     } else {
       let filterdIds = b.concat(a);
-      const data1 = await axios.patch(`http://localhost:5000/join/request?ids=${groupIds}`, {
+      const data1 = await axios.patch(`https://real-time-chat-4zya.onrender.com/join/request?ids=${groupIds}`, {
         requests: filterdIds,
       });
       if (data1.request.status === 200) {
         setJoinHope(true);
-        const data2 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+        const data2 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
         newRequestDataSetHandler(data2.data);
         afterCancel();
       }
@@ -429,13 +429,13 @@ const Main = () => {
   // group member add and remove handler
   const groupMemberAddAndRemoveHandler = async (el) => {
     setOnlyAddAndRemoveContainer(true);
-    const data2 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+    const data2 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
     const members = ownGroupData[0]?.members;
     setOwnGroupList(false);
     let arr = [];
     members?.map((els) => {
       const func = async () => {
-        const data = await axios.get(`http://localhost:5000/get/single/user?ids=${els}`);
+        const data = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/user?ids=${els}`);
         arr.push(data.data[0]);
         if (arr.length === members.length) {
           setAddAndRemove(arr);
@@ -463,7 +463,7 @@ const Main = () => {
       });
       requests.map((els, i) => {
         const func = async () => {
-          const data = await axios.get(`http://localhost:5000/get/single/user?ids=${els}`);
+          const data = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/user?ids=${els}`);
           arr.push(data.data[0]);
           if (i === requests.length - 1) {
             setNewRequestData(arr);
@@ -481,19 +481,19 @@ const Main = () => {
 
   // after cancel
   const afterCancel = async () => {
-    const data = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+    const data = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
     setOwnGroupData(data.data);
   };
 
   // after delete fetch data for total users and add members
   const fetchForAllMembersAfterDelete = async () => {
-    const data1 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+    const data1 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
     if (data1.request.status === 200 && data1.data.length !== 0) {
       setOwnGroupData(data1.data);
       let bb = [];
       data1.data[0].members.map((aa, i) => {
         const func = async () => {
-          const data4 = await axios.get(`http://localhost:5000/get/single/user?ids=${aa}`);
+          const data4 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/user?ids=${aa}`);
           if (data4.data.length !== 0 && data4.request.status === 200) {
             bb.push(data4.data[0]);
             if (i === data1.data[0].members.length - 1) {
@@ -514,9 +514,9 @@ const Main = () => {
 
   // after delete fetch data for add members
   const fetchForAddMembersAfterDelete = async () => {
-    const data1 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+    const data1 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
     let idContainer = [];
-    const data = await axios.get("http://localhost:5000/get/all/users");
+    const data = await axios.get("https://real-time-chat-4zya.onrender.com/get/all/users");
     data.data.map((e, i) => {
       idContainer.push(e._id);
       if (i === data.data.length - 1) {
@@ -524,7 +524,7 @@ const Main = () => {
         let aaa = [];
         ids.map((ee, i) => {
           const func = async () => {
-            const data4 = await axios.get(`http://localhost:5000/get/single/user?ids=${ee}`);
+            const data4 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/user?ids=${ee}`);
             if (data4.data.length !== 0 && data4.request.status === 200) {
               aaa.push(data4.data[0]);
               if (i === ids.length - 1) {
@@ -550,7 +550,7 @@ const Main = () => {
     const currentMembers = ownGroupData[0].members;
     const idsToBeRemoved = ids;
     const filterdIds = currentMembers.filter((o) => idsToBeRemoved.indexOf(o) === -1);
-    const data = await axios.patch(`http://localhost:5000/add/group/member?ids=${groupIds}`, {
+    const data = await axios.patch(`https://real-time-chat-4zya.onrender.com/add/group/member?ids=${groupIds}`, {
       members: filterdIds,
     });
     if (data.request.status === 200) {
@@ -561,7 +561,7 @@ const Main = () => {
 
   //add members handler
   const addMembersHandler = async (el) => {
-    const data = await axios.get("http://localhost:5000/get/all/users");
+    const data = await axios.get("https://real-time-chat-4zya.onrender.com/get/all/users");
     if (data.data.length !== 0 && data.request.status === 200) {
       const allUser = data.data;
       const members = ownGroupData[0].members;
@@ -575,7 +575,7 @@ const Main = () => {
           let aaa = [];
           unique1.map((ee, i) => {
             const func = async () => {
-              const data4 = await axios.get(`http://localhost:5000/get/single/user?ids=${ee}`);
+              const data4 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/user?ids=${ee}`);
               if (data4.data.length !== 0 && data4.request.status === 200) {
                 aaa.push(data4.data[0]);
                 if (i === unique1.length - 1) {
@@ -595,7 +595,7 @@ const Main = () => {
 
   // add users to group handler
   const addUsersToGroupHandler = async (val) => {
-    const data = await axios.patch(`http://localhost:5000/add/group/member?ids=${groupIds}`, {
+    const data = await axios.patch(`https://real-time-chat-4zya.onrender.com/add/group/member?ids=${groupIds}`, {
       members: [...ownGroupData[0].members, val],
     });
     if (data.data.length !== 0 && data.request.status === 200) {
@@ -606,17 +606,17 @@ const Main = () => {
 
   // request accept handler
   const requestAcceptHandler = async (val) => {
-    const data1 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+    const data1 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
     if (data1.data.length !== 0 && data1.request.status === 200) {
       const acceptedIds = val;
       const currentIds = data1.data[0].requests;
       const filterdIds = currentIds.filter((el) => el !== acceptedIds);
-      const data2 = await axios.patch(`http://localhost:5000/join/request?ids=${groupIds}`, {
+      const data2 = await axios.patch(`https://real-time-chat-4zya.onrender.com/join/request?ids=${groupIds}`, {
         requests: filterdIds,
       });
       if (data2.request.status === 200) {
         addUsersToGroupHandler(val);
-        const data3 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+        const data3 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
         newRequestDataSetHandler(data3.data);
       }
     }
@@ -624,16 +624,16 @@ const Main = () => {
 
   //request reject handler
   const requestRejectHandler = async (val) => {
-    const data1 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+    const data1 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
     if (data1.request.status === 200 && data1.data.length !== 0) {
       const currentIds = data1.data[0].requests;
       const removedIds = val;
       const filterdIds = currentIds.filter((el) => el !== removedIds);
-      const data2 = await axios.patch(`http://localhost:5000/join/request?ids=${groupIds}`, {
+      const data2 = await axios.patch(`https://real-time-chat-4zya.onrender.com/join/request?ids=${groupIds}`, {
         requests: filterdIds,
       });
       if (data2.request.status === 200) {
-        const data3 = await axios.get(`http://localhost:5000/get/single/group?ids=${groupIds}`);
+        const data3 = await axios.get(`https://real-time-chat-4zya.onrender.com/get/single/group?ids=${groupIds}`);
         newRequestDataSetHandler(data3.data);
         setJoinHope(false);
       }
